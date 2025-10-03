@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the requirements for implementing two new API endpoints for ticket and revenue trends data in the admin donor application.
+This document outlines the requirements for implementing three new API endpoints for trends data in the admin donor application.
 
 ## API Endpoints Required
 
@@ -10,7 +10,7 @@ This document outlines the requirements for implementing two new API endpoints f
 
 **Endpoint:** `GET /api/v1/trends/tickets`
 
-**Purpose:** Retrieve ticket sales trends with service usage data
+**Purpose:** Retrieve ticket sales trends with daily breakdown
 
 **Authentication:** Required (Bearer token)
 
@@ -50,45 +50,51 @@ This document outlines the requirements for implementing two new API endpoints f
         "offline": 450,
         "adults": 950,
         "children": 300,
-        "vipCount": 25
-      }
-    ],
-    "serviceUsage": {
-      "kioskStats": {
-        "KisokAdult": 1850,
-        "KisokChildren": 920,
-        "Books": 320,
-        "Prasadam": 450,
-        "Puja": 380,
-        "Temples": 680,
-        "HanumanVadamala": 180,
-        "GarudaPuja": 140,
-        "HanumanPuja": 200,
-        "SamathaNeerajanam": 95,
-        "AudioDevices": 420,
-        "Beverages": 580,
-        "DressCode": 220,
-        "PrivateGuide": 70,
-        "GroupGuide": 280
+        "vipCount": 25,
+        "channels": {
+          "online": {
+            "tickets": 800,
+            "visitors": 800,
+            "adults": 600,
+            "children": 200,
+            "vipCount": 15
+          },
+          "offline": {
+            "tickets": 450,
+            "visitors": 450,
+            "adults": 350,
+            "children": 100,
+            "vipCount": 10
+          }
+        }
       },
-      "offlineStats": {
-        "KisokAdult": 1420,
-        "KisokChildren": 680,
-        "Books": 250,
-        "Prasadam": 350,
-        "Puja": 280,
-        "Temples": 520,
-        "HanumanVadamala": 120,
-        "GarudaPuja": 100,
-        "HanumanPuja": 150,
-        "SamathaNeerajanam": 70,
-        "AudioDevices": 320,
-        "Beverages": 450,
-        "DressCode": 180,
-        "PrivateGuide": 50,
-        "GroupGuide": 220
+      {
+        "date": "2024-01-16",
+        "tickets": 1380,
+        "visitors": 1380,
+        "online": 920,
+        "offline": 460,
+        "adults": 1050,
+        "children": 330,
+        "vipCount": 28,
+        "channels": {
+          "online": {
+            "tickets": 920,
+            "visitors": 920,
+            "adults": 690,
+            "children": 230,
+            "vipCount": 18
+          },
+          "offline": {
+            "tickets": 460,
+            "visitors": 460,
+            "adults": 360,
+            "children": 100,
+            "vipCount": 10
+          }
+        }
       }
-    }
+    ]
   }
 }
 ```
@@ -99,7 +105,7 @@ This document outlines the requirements for implementing two new API endpoints f
 
 **Endpoint:** `GET /api/v1/trends/revenue`
 
-**Purpose:** Retrieve revenue trends with payment method breakdown
+**Purpose:** Retrieve revenue trends with payment method breakdown per day
 
 **Authentication:** Required (Bearer token)
 
@@ -142,27 +148,245 @@ This document outlines the requirements for implementing two new API endpoints f
         "offline": 450,
         "onlineAmount": 120000,
         "offlineAmount": 67500,
-        "averageTicketPrice": 150
+        "averageTicketPrice": 150,
+        "channels": {
+          "online": {
+            "amount": 120000,
+            "tickets": 800,
+            "visitors": 800,
+            "averageTicketPrice": 150
+          },
+          "offline": {
+            "amount": 67500,
+            "tickets": 450,
+            "visitors": 450,
+            "averageTicketPrice": 150
+          }
+        },
+        "paymentMethods": [
+          {
+            "name": "UPI",
+            "amount": 75000,
+            "count": 500,
+            "percentage": 40.0,
+            "channels": {
+              "online": {
+                "amount": 48000,
+                "count": 320
+              },
+              "offline": {
+                "amount": 27000,
+                "count": 180
+              }
+            }
+          },
+          {
+            "name": "Card",
+            "amount": 56250,
+            "count": 375,
+            "percentage": 30.0,
+            "channels": {
+              "online": {
+                "amount": 36000,
+                "count": 240
+              },
+              "offline": {
+                "amount": 20250,
+                "count": 135
+              }
+            }
+          },
+          {
+            "name": "Cash",
+            "amount": 56250,
+            "count": 375,
+            "percentage": 30.0,
+            "channels": {
+              "online": {
+                "amount": 36000,
+                "count": 240
+              },
+              "offline": {
+                "amount": 20250,
+                "count": 135
+              }
+            }
+          }
+        ]
+      },
+      {
+        "date": "2024-01-16",
+        "amount": 207000,
+        "tickets": 1380,
+        "visitors": 1380,
+        "online": 920,
+        "offline": 460,
+        "onlineAmount": 138000,
+        "offlineAmount": 69000,
+        "averageTicketPrice": 150,
+        "channels": {
+          "online": {
+            "amount": 138000,
+            "tickets": 920,
+            "visitors": 920,
+            "averageTicketPrice": 150
+          },
+          "offline": {
+            "amount": 69000,
+            "tickets": 460,
+            "visitors": 460,
+            "averageTicketPrice": 150
+          }
+        },
+        "paymentMethods": [
+          {
+            "name": "UPI",
+            "amount": 82800,
+            "count": 552,
+            "percentage": 40.0,
+            "channels": {
+              "online": {
+                "amount": 55200,
+                "count": 368
+              },
+              "offline": {
+                "amount": 27600,
+                "count": 184
+              }
+            }
+          },
+          {
+            "name": "Card",
+            "amount": 62100,
+            "count": 414,
+            "percentage": 30.0,
+            "channels": {
+              "online": {
+                "amount": 41400,
+                "count": 276
+              },
+              "offline": {
+                "amount": 20700,
+                "count": 138
+              }
+            }
+          },
+          {
+            "name": "Cash",
+            "amount": 62100,
+            "count": 414,
+            "percentage": 30.0,
+            "channels": {
+              "online": {
+                "amount": 41400,
+                "count": 276
+              },
+              "offline": {
+                "amount": 20700,
+                "count": 138
+              }
+            }
+          }
+        ]
       }
-    ],
-    "paymentMethods": [
+    ]
+  }
+}
+```
+
+---
+
+### 3. Service Usage API (NEW)
+
+**Endpoint:** `GET /api/v1/trends/service-usage`
+
+**Purpose:** Retrieve service usage trends (separate from ticket/revenue trends)
+
+**Authentication:** Required (Bearer token)
+
+**Request Payload:**
+
+```json
+{
+  "startDate": "2024-01-15",
+  "endDate": "2024-01-21",
+  "period": "daily",
+  "channel": null
+}
+```
+
+**Request Parameters:**
+| Parameter | Type | Required | Description | Values |
+|-----------|------|----------|-------------|---------|
+| `startDate` | string | ✅ | Start date for trend data | Format: "YYYY-MM-DD" |
+| `endDate` | string | ✅ | End date for trend data | Format: "YYYY-MM-DD" |
+| `period` | string | ✅ | Data aggregation period | "daily", "weekly", "monthly" |
+| `channel` | number | ❌ | Filter by channel | `null` (all), `1` (online), `2` (offline) |
+
+**Response Format:**
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Service usage trends retrieved successfully",
+  "data": {
+    "dateRangeData": [
       {
-        "name": "UPI",
-        "amount": 450000,
-        "count": 3000,
-        "percentage": 40.0
-      },
-      {
-        "name": "Card",
-        "amount": 337500,
-        "count": 2250,
-        "percentage": 30.0
-      },
-      {
-        "name": "Cash",
-        "amount": 337500,
-        "count": 2250,
-        "percentage": 30.0
+        "date": "2024-01-15",
+        "channels": {
+          "online": {
+            "KisokAdult": 400,
+            "KisokChildren": 200,
+            "Books": 60,
+            "Prasadam": 100,
+            "Puja": 80,
+            "Temples": 150,
+            "HanumanVadamala": 40,
+            "GarudaPuja": 30,
+            "HanumanPuja": 45,
+            "SamathaNeerajanam": 20,
+            "AudioDevices": 90,
+            "Beverages": 120,
+            "DressCode": 50,
+            "PrivateGuide": 15,
+            "GroupGuide": 60
+          },
+          "offline": {
+            "KisokAdult": 300,
+            "KisokChildren": 150,
+            "Books": 45,
+            "Prasadam": 75,
+            "Puja": 60,
+            "Temples": 120,
+            "HanumanVadamala": 30,
+            "GarudaPuja": 25,
+            "HanumanPuja": 35,
+            "SamathaNeerajanam": 15,
+            "AudioDevices": 70,
+            "Beverages": 90,
+            "DressCode": 40,
+            "PrivateGuide": 10,
+            "GroupGuide": 45
+          }
+        },
+        "total": {
+          "KisokAdult": 700,
+          "KisokChildren": 350,
+          "Books": 105,
+          "Prasadam": 175,
+          "Puja": 140,
+          "Temples": 270,
+          "HanumanVadamala": 70,
+          "GarudaPuja": 55,
+          "HanumanPuja": 80,
+          "SamathaNeerajanam": 35,
+          "AudioDevices": 160,
+          "Beverages": 210,
+          "DressCode": 90,
+          "PrivateGuide": 25,
+          "GroupGuide": 105
+        }
       }
     ]
   }
@@ -191,6 +415,17 @@ This document outlines the requirements for implementing two new API endpoints f
 - `"Card"` = Card payments (Credit/Debit)
 - `"Cash"` = Cash payments
 - `null` = All payment methods
+
+---
+
+## Key Changes from Previous Version
+
+1. **Removed service usage** from ticket and revenue trends APIs
+2. **Added separate service usage API** for service-specific data
+3. **Added channel-wise breakdown** in each day's data
+4. **Added payment method breakdown** per day with channel-wise data
+5. **Simplified ticket trends** to focus only on ticket/visitor metrics
+6. **Enhanced revenue trends** with detailed payment method and channel data
 
 ---
 
@@ -238,7 +473,7 @@ This document outlines the requirements for implementing two new API endpoints f
 
 - **Ticket Data**: From existing ticket reports database
 - **Revenue Data**: From payment transaction records
-- **Service Usage**: From kiosk and offline service logs
+- **Service Usage Data**: From kiosk and offline service logs
 
 ### Performance Considerations
 
@@ -263,6 +498,7 @@ These APIs will be consumed by:
 
 - `src/features/ticket-reports/components/trends/ticket-trends-tab.tsx`
 - `src/features/ticket-reports/components/trends/revenue-trends-tab.tsx`
+- `src/features/ticket-reports/components/trends/service-usage-chart.tsx`
 - `src/features/ticket-reports/hooks/use-ticket-reports.ts`
 
 ### Expected Response Times
